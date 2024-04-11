@@ -11,10 +11,10 @@ class Piece:
         self.side = side
 
     def isValidCoordinate(self, BOARD_SIZE, x, y):
-        if x > BOARD_SIZE - 1 or y > BOARD_SIZE - 1:
-            return False
+        if x <= BOARD_SIZE - 1 and x >= 0 and y <= BOARD_SIZE - 1 and y >= 0:
+            return True
     
-        return True
+        return False
 
 
 from .side import Side
@@ -36,7 +36,7 @@ class Pawn(Piece):
     def generateMoveSet(self, side, board, originX, originY):
         moveSet = []
         if side == Side.BLACK:
-            if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY) and board[originX - 1, originY].point.piece == None:
                 moveSet.append((originX - 1, originY))
 
             if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY - 1) and board[originX - 1, originY - 1].point.piece != None and board[originX - 1, originY - 1].point.piece.side != self.side:
@@ -50,7 +50,8 @@ class Pawn(Piece):
 
 
         elif side == Side.WHITE:
-            moveSet.append((originX + 1, originY))
+            if self.isValidCoordinate(board.BOARD_SIZE, originX + 1, originY) and board[originX + 1, originY].point.piece == None:
+                moveSet.append((originX + 1, originY))
 
             if self.isValidCoordinate(board.BOARD_SIZE, originX + 1, originY - 1) and board[originX + 1, originY - 1].point.piece != None and board[originX + 1, originY - 1].point.piece.side != self.side:
                 moveSet.append((originX + 1, originY - 1))
@@ -61,5 +62,13 @@ class Pawn(Piece):
             if originX == 1 :
                 moveSet.append((originX + 2, originY))
             
+        self.printMoveSet(moveSet)
+
         return moveSet
+    
+
+    #for test only
+    def printMoveSet(self, moveSet):
+        for item in moveSet:
+            print(item)
     

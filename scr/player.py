@@ -3,7 +3,7 @@ class Player:
   def __init__(self, side, username):
     self.__side = side
     self.__username = username
-    self.__capturedList = None
+    self.__capturedList = []
 
   @property
   def side(self):

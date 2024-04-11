@@ -5,7 +5,7 @@ from kivy.graphics import Color, Ellipse
 class HintDot(Widget):
     def __init__(self, **kwargs):
         super(HintDot, self).__init__(**kwargs)
-        self.create_dot(color=(1, 0, 0, 0))
+        self.create_dot(color=(0.9, 0.24, 0.24, 0))
 
     def create_dot(self, color):
         with self.canvas:
@@ -14,8 +14,8 @@ class HintDot(Widget):
 
     def showHint(self):
         self.canvas.clear()
-        self.create_dot(color=(0.5, 0.5, 0.5, 0.4))
+        self.create_dot(color=(0.9, 0.24, 0.24, 0.6))
         
     def hideHint(self):
         self.canvas.clear()
-        self.create_dot(color=(0.5, 0.5, 0.5, 0))
+        self.create_dot(color=(0.9, 0.24, 0.24, 0))

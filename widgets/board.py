@@ -24,10 +24,10 @@ class Board(GridLayout):
         self.logger = []
 
         self.turn = player1
-        self.selectedPiece = None
+        self.selectedSquare = None
 
         self.initializeComponents()
-        self.initializeVisual()
+        self.renderVisual()
 
 
     def initializeComponents(self):
@@ -65,7 +65,7 @@ class Board(GridLayout):
         self.board[6][6].point.piece = Pawn(Side.BLACK) 
         self.board[6][7].point.piece = Pawn(Side.BLACK) 
 
-    def initializeVisual(self):
+    def renderVisual(self):
         for i, row in enumerate(self.board):
             for j, col in enumerate(row):
                 self.board[i][j].updateVisual()
@@ -74,11 +74,6 @@ class Board(GridLayout):
     def __getitem__(self, coordinate):
         x, y = coordinate
         return self.board[x][y]
-
-
-    def movePiece(self, point):
-        if point.piece != None:
-            pass
             
     
     #
@@ -86,35 +81,52 @@ class Board(GridLayout):
         moveSet = []
         # Point calls Piece to check valid Move
         if square.point.piece != None:
-            if self.selectedPiece != None:
-                if self.selectedPiece == square.point.piece:
-                    # deselecting piece
-                    self.selectedPiece = None
+            if self.selectedSquare != None:
+                if self.turn.side == square.point.piece.side:
+                    self.selectedSquare = square
                     self.resetHint()
+                    moveSet = self.selectedSquare.point.piece.generateMoveSet(side=self.selectedSquare.point.piece.side, board=self, originX=square.point.x, originY=square.point.y)
+                    self.generateHint(moveSet)
+                    print("try to attack your bros huh, select him instead")
+
                 else:
-                    if square.point.piece.side 
-                    moveSet = square.point.piece.generateMoveSet(side=square.point.piece.side, board=self, originX=square.point.x, originY=square.point.y)
+                    moveSet = self.selectedSquare.point.piece.generateMoveSet(side=self.selectedSquare.point.piece.side, board=self, 
+                    originX=self.selectedSquare.point.x, originY=self.selectedSquare.point.y)
 
                     if self.isInMoveSet(moveSet=moveSet, selectedX=square.point.x, selectedY=square.point.y):
-                        
+                        self.makeAttack(square)
+                        self.selectedSquare = None
+                        self.resetHint()
+                        print("attack")
+
+                    if not self.isInMoveSet(moveSet=moveSet, selectedX=square.point.x, selectedY=square.point.y):
+                        self.selectedSquare = None
+                        self.resetHint()
+                        print("Bruh this move is not even in moveSet, try to attack air?")
 
             else:
-                self.selectedPiece = square.point.piece
-                # check if user of that turn pick their piece
-                if self.selectedPiece.side == self.turn.side:
-                    moveSet = square.point.piece.generateMoveSet(side=square.point.piece.side, board=self, originX=square.point.x, originY=square.point.y)
+                if self.turn.side == square.point.piece.side:
+                    self.selectedSquare = square
+                    moveSet = self.selectedSquare.point.piece.generateMoveSet(side=self.selectedSquare.point.piece.side, board=self, originX=square.point.x, originY=square.point.y)
                     self.generateHint(moveSet)
-                
-                else
+                    print("nothing get selected yet so im gonna pick this")
+                else:
+                    print("try to select enemy's piece huh, pls dont do that ")
                     
-
         else:
-            if self.selectedPiece != None:
-                # making a move -> check valid move
-                self.movePiece(square.point)
+            if self.selectedSquare != None:
+                moveSet = self.selectedSquare.point.piece.generateMoveSet(side=self.selectedSquare.point.piece.side, board=self, originX=self.selectedSquare.point.x, originY=self.selectedSquare.point.y)
+                if self.isInMoveSet(moveSet=moveSet, selectedX=square.point.x, selectedY=square.point.y):
+                    self.doMove(square)
+                    self.selectedSquare = None
+                    self.resetHint()
+                    print("move")
+                else:
+                    self.selectedSquare = None
+                    self.resetHint()
+                    print("Bruh this move is not even in moveSet, try to step in the air?")
             else:
-                # random click on board makes by player, do nothing
-                pass
+                print("really nothing to do here")
 
 
     def generateHint(self, moveSet):
@@ -133,15 +145,42 @@ class Board(GridLayout):
                 square.hintDot.hideHint()
 
 
-    def isInMoveSet(moveSet, selectedX, selectedY):
+    def isInMoveSet(self, moveSet, selectedX, selectedY):
         for move in moveSet:
             x, y = move
             if x == selectedX and y == selectedY:
+                print(f"Already in moveSet: {selectedX}, {selectedY}")
                 return True
             
         return False
+    
+    def makeAttack(self, square):
+        print("Attack yet?")
+
+        if self.turn.side == self.player1.side and self.selectedSquare.point.piece.side ==  self.player1.side:
+            self.player1.addCapturedPiece(square.point.piece)
+
+        if self.turn.side == self.player2.side and self.selectedSquare.point.piece.side ==  self.player2.side:
+            self.player2.addCapturedPiece(square.point.piece)
+
+        self.board[square.point.x][square.point.y].point.piece = self.selectedSquare.point.piece
+        self.board[self.selectedSquare.point.x][self.selectedSquare.point.y].point.piece = None
+
+        self.renderVisual()
 
 
+    def doMove(self, square):
+        self.board[square.point.x][square.point.y].point.piece = self.selectedSquare.point.piece
+        self.board[self.selectedSquare.point.x][self.selectedSquare.point.y].point.piece = None
+
+        self.renderVisual()
+
+
+    #for test only
+    def printBoard(self):
+        for i, row in enumerate(self.board):
+            for j, col in enumerate(row):
+                print(self.board[i][j].point.piece)
     
 
         
