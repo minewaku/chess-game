@@ -16,6 +16,7 @@ class Square(FloatLayout):
         self.point = point
         self.board = board
         self.background_color = background_color
+        self.moveSet = []
 
         # self.button = Button(size_hint=(1.0, 1.0), pos_hint={'center_x': 0.5, 'center_y': 0.5}, background_color = self.background_color, background_normal = '', background_down = '', on_press=lambda instance: self.on_click(turn=self.board.turn, board=self.board))
         self.button = Button(size_hint=(1.0, 1.0), pos_hint={'center_x': 0.5, 'center_y': 0.5}, background_color = self.background_color, background_normal = '', background_down = '', on_press=lambda instance: self.board.selectSquare(square=self))
@@ -36,6 +37,7 @@ class Square(FloatLayout):
 
         else:
             self.img.source = Piece.transparentImg
+
 
 
     # def on_click(self, turn, board):
