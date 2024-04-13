@@ -85,7 +85,6 @@ class Board(GridLayout):
         return self.board[x][y]
             
     
-    #
     def selectSquare(self, square):
         # Point calls Piece to check valid Move
         if square.point.piece != None:
@@ -95,7 +94,7 @@ class Board(GridLayout):
                     self.selectedSquare = square
                     moveSet = self.selectedSquare.point.piece.moveSet
                     self.renderHint(moveSet=moveSet)
-                    print("try to attack your bros huh, select him instead")
+                    # print("try to attack your bros huh, select him instead")
 
                 else:
                     moveSet = self.selectedSquare.point.piece.moveSet
@@ -105,21 +104,23 @@ class Board(GridLayout):
                         self.selectedSquare = None
                         self.resetHint(moveSet=moveSet)
                         self.updateMoveSetForAllPieces()
-                        print("attack")
+                        self.checkCheckMateForAllPieces()
+                        # print("attack")
 
                     if not self.isInMoveSet(moveSet=moveSet, selectedX=square.point.x, selectedY=square.point.y):
                         self.selectedSquare = None
                         self.resetHint(moveSet=moveSet)
-                        print("Bruh this move is not even in moveSet, try to attack air?")
+                        # print("Bruh this move is not even in moveSet, try to attack air?")
 
             else:
                 if self.turn.side == square.point.piece.side:
                     self.selectedSquare = square
                     moveSet = self.selectedSquare.point.piece.moveSet
                     self.renderHint(moveSet=moveSet)
-                    print("nothing get selected yet so im gonna pick this")
+                    # print("nothing get selected yet so im gonna pick this")
                 else:
-                    print("try to select enemy's piece huh, pls dont do that ")
+                    # print("try to select enemy's piece huh, pls dont do that ")
+                    pass
                     
         else:
             if self.selectedSquare != None:
@@ -129,13 +130,15 @@ class Board(GridLayout):
                     self.selectedSquare = None
                     self.resetHint(moveSet=moveSet)
                     self.updateMoveSetForAllPieces()
-                    print("move")
+                    self.checkCheckMateForAllPieces()
+                    # print("move")
                 else:
                     self.selectedSquare = None
                     self.resetHint(moveSet=moveSet)
-                    print("Bruh this move is not even in moveSet, try to step in the air?")
+                    # print("Bruh this move is not even in moveSet, try to step in the air?")
             else:
-                print("really nothing to do here")
+                # print("really nothing to do here")
+                pass
 
 
     def renderHint(self, moveSet):
@@ -154,31 +157,17 @@ class Board(GridLayout):
         for move in moveSet:
             x, y = move
             if x == selectedX and y == selectedY:
-                print(f"Already in moveSet: {selectedX}, {selectedY}")
                 return True
             
         return False
     
-    def makeAttack(self, square):
-        if self.turn.side == self.player1.side and self.selectedSquare.point.piece.side ==  self.player1.side:
-            self.player1.addCapturedPiece(square.point.piece)
-
-        if self.turn.side == self.player2.side and self.selectedSquare.point.piece.side ==  self.player2.side:
-            self.player2.addCapturedPiece(square.point.piece)
-
-        self.board[square.point.x][square.point.y].point.piece = self.selectedSquare.point.piece
-        self.board[self.selectedSquare.point.x][self.selectedSquare.point.y].point.piece = None
-
-        self.renderVisual()
-
 
     def doMove(self, square):
-
         if square.point.piece != None:
-            if self.turn.side == self.player1.side and self.selectedSquare.point.piece.side ==  self.player1.side:
+            if self.turn.side == self.player1.side and self.selectedSquare.point.piece.side == self.player1.side:
                 self.player1.addCapturedPiece(square.point.piece)
 
-            if self.turn.side == self.player2.side and self.selectedSquare.point.piece.side ==  self.player2.side:
+            if self.turn.side == self.player2.side and self.selectedSquare.point.piece.side == self.player2.side:
                 self.player2.addCapturedPiece(square.point.piece)
 
         self.board[square.point.x][square.point.y].point.piece = self.selectedSquare.point.piece
@@ -191,7 +180,15 @@ class Board(GridLayout):
         for i, row in enumerate(self.board):
             for j, col in enumerate(row):
                 if self.board[i][j].point.piece != None:
-                    self.board[i][j].point.piece.generateMoveSet(board=self, originX=self.board[i][j].point.x,  originY=self.board[i][j].point.y)
+                    self.board[i][j].point.piece.generateMoveSet(board=self, originX=self.board[i][j].point.x, originY=self.board[i][j].point.y)
+
+    #check side to avoid sucuide move
+    def checkCheckMateForAllPieces(self):
+        for i, row in enumerate(self.board):
+            for j, col in enumerate(row):
+                if self.board[i][j].point.piece != None and self.board[i][j].point.piece.isCheckMate(self):
+                    print("is checkmate")
+        
 
 
     #for test only

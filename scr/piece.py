@@ -7,13 +7,22 @@ class Piece:
 
     transparentImg = os.path.join("assets", "img", "pieces", "transparent_img.png")
 
-    def __init__(self, side):
+    def __init__(self, side, moveSet):
         self.side = side
+        self.moveSet = moveSet
 
     def isValidCoordinate(self, BOARD_SIZE, x, y):
         if x <= BOARD_SIZE - 1 and x >= 0 and y <= BOARD_SIZE - 1 and y >= 0:
             return True
     
+        return False
+    
+    def isCheckMate(self, board):
+        for move in self.moveSet:
+            x, y = move
+            if isinstance(board.board[x][y].point.piece, King):
+                return True
+            
         return False
 
 
@@ -24,13 +33,12 @@ class Pawn(Piece):
     whiteImg = os.path.join("assets", "img", "pieces", "white_pawn.png")
 
     def __init__(self, side):
-        super().__init__(side)
+        super().__init__(side=side, moveSet=[])
         
         if side == Side.BLACK:
             self.img = Pawn.blackImg
         else:
             self.img = Pawn.whiteImg
-        self.moveSet = []
        
             
     #create bunch of moves without thinking about how valid they are. Checking for later
@@ -62,16 +70,14 @@ class Pawn(Piece):
             
             if originX == 1 :
                 self.moveSet.append((originX + 2, originY))
-            
-        self.printMoveSet(self.moveSet)
 
         return self.moveSet
     
 
-    #for test only
-    def printMoveSet(self, moveSet):
-        for item in moveSet:
-            print(item)
+    # #for test only
+    # def printMoveSet(self, moveSet):
+    #     for item in moveSet:
+    #         print(item)
     
 
 
@@ -82,13 +88,13 @@ class Queen(Piece):
     whiteImg = os.path.join("assets", "img", "pieces", "white_queen.png")
 
     def __init__(self, side):
-        super().__init__(side)
+        super().__init__(side=side, moveSet=[])
         
         if side == Side.BLACK:
             self.img = Queen.blackImg
         else:
             self.img = Queen.whiteImg
-        self.moveSet = []
+
 
     def generateMoveSet(self, board, originX, originY):
         self.moveSet = []
@@ -208,13 +214,12 @@ class King(Piece):
     whiteImg = os.path.join("assets", "img", "pieces", "white_king.png")
 
     def __init__(self, side):
-        super().__init__(side)
+        super().__init__(side=side, moveSet=[])
         
         if side == Side.BLACK:
             self.img = King.blackImg
         else:
             self.img = King.whiteImg
-        self.moveSet = []
        
             
     #create bunch of moves without thinking about how valid they are. Checking for later
