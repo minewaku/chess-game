@@ -4,6 +4,8 @@ sys.path.append('../')
 from scr.point import Point
 from scr.piece import Piece
 from scr.piece import Pawn
+from scr.piece import Queen
+from scr.piece import King
 from scr.point import Point
 from scr.side import Side
 
@@ -57,6 +59,9 @@ class Board(GridLayout):
         self.board[1][6].point.piece = Pawn(Side.WHITE) 
         self.board[1][7].point.piece = Pawn(Side.WHITE) 
 
+        self.board[0][3].point.piece = Queen(Side.WHITE)
+        self.board[0][4].point.piece = King(Side.WHITE)
+
         self.board[6][0].point.piece = Pawn(Side.BLACK) 
         self.board[6][1].point.piece = Pawn(Side.BLACK) 
         self.board[6][2].point.piece = Pawn(Side.BLACK) 
@@ -65,6 +70,9 @@ class Board(GridLayout):
         self.board[6][5].point.piece = Pawn(Side.BLACK) 
         self.board[6][6].point.piece = Pawn(Side.BLACK) 
         self.board[6][7].point.piece = Pawn(Side.BLACK) 
+
+        self.board[7][3].point.piece = Queen(Side.BLACK)
+        self.board[7][4].point.piece = King(Side.BLACK)
 
     def renderVisual(self):
         for i, row in enumerate(self.board):

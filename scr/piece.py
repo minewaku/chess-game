@@ -73,3 +73,213 @@ class Pawn(Piece):
         for item in moveSet:
             print(item)
     
+
+
+from .side import Side
+class Queen(Piece):
+
+    blackImg = os.path.join("assets", "img", "pieces", "black_queen.png")
+    whiteImg = os.path.join("assets", "img", "pieces", "white_queen.png")
+
+    def __init__(self, side):
+        super().__init__(side)
+        
+        if side == Side.BLACK:
+            self.img = Queen.blackImg
+        else:
+            self.img = Queen.whiteImg
+        self.moveSet = []
+
+    def generateMoveSet(self, board, originX, originY):
+        self.moveSet = []
+        #diagonal
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX - i, originY - i): 
+                if board.board[originX - i][originY - i].point.piece != None:
+                    if board.board[originX - i][originY - i].point.piece.side != self.side:
+                        self.moveSet.append((originX - i, originY - i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX - i, originY - i))
+            else:
+                break
+
+        for i in range(1, 8):        
+            if self.isValidCoordinate(board.BOARD_SIZE, originX - i, originY + i): 
+                if board.board[originX - i][originY + i].point.piece != None:
+                    if board.board[originX - i][originY + i].point.piece.side != self.side:
+                        self.moveSet.append((originX - i, originY + i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX - i, originY + i))
+            else:
+                break
+
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX + i, originY - i): 
+                if board.board[originX + i][originY - i].point.piece != None:
+                    if board.board[originX + i][originY - i].point.piece.side != self.side:
+                        self.moveSet.append((originX + i, originY - i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX + i, originY - i))
+            else:
+                break        
+
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX + i, originY + i): 
+                if board.board[originX + i][originY + i].point.piece != None:
+                    if board.board[originX + i][originY + i].point.piece.side != self.side:
+                        self.moveSet.append((originX + i, originY + i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX + i, originY + i))
+            else:
+                break
+
+
+        #vertical
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX + i, originY):
+                if board.board[originX + i][originY].point.piece != None:
+                    if board.board[originX + i][originY].point.piece.side != self.side:
+                        self.moveSet.append((originX + i, originY))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX + i, originY))
+            else:
+                break
+
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX - i, originY):
+                if board.board[originX - i][originY].point.piece != None: 
+                    if board.board[originX - i][originY].point.piece.side != self.side:
+                        self.moveSet.append((originX - i, originY))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX - i, originY))
+            else:
+                break
+
+
+        #horizontal
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX, originY + i): 
+                if board.board[originX][originY + i].point.piece != None:
+                    if board.board[originX][originY + i].point.piece.side != self.side:
+                        self.moveSet.append((originX, originY + i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX, originY + i))
+
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX, originY - i): 
+                if board.board[originX][originY - i].point.piece != None:
+                    if board.board[originX][originY - i].point.piece.side != self.side:
+                        self.moveSet.append((originX, originY - i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX, originY - i))
+
+        return self.moveSet
+
+
+
+from .side import Side
+class King(Piece):
+
+    blackImg = os.path.join("assets", "img", "pieces", "black_king.png")
+    whiteImg = os.path.join("assets", "img", "pieces", "white_king.png")
+
+    def __init__(self, side):
+        super().__init__(side)
+        
+        if side == Side.BLACK:
+            self.img = King.blackImg
+        else:
+            self.img = King.whiteImg
+        self.moveSet = []
+       
+            
+    #create bunch of moves without thinking about how valid they are. Checking for later
+    def generateMoveSet(self, board, originX, originY):
+        self.moveSet = []
+        if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY + 1):
+            if board.board[originX - 1][originY + 1].point.piece != None:
+                if board.board[originX - 1][originY + 1].point.piece.side != self.side:
+                    self.moveSet.append((originX - 1, originY + 1))
+            else:
+                self.moveSet.append((originX - 1, originY + 1))
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY - 1):
+            if board.board[originX - 1][originY - 1].point.piece != None:
+                if board.board[originX - 1][originY - 1].point.piece.side != self.side:
+                    self.moveSet.append((originX - 1, originY - 1))
+            else:
+                self.moveSet.append((originX - 1, originY - 1))
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX + 1, originY - 1):
+            if board.board[originX + 1][originY - 1].point.piece != None:
+                if board.board[originX + 1][originY - 1].point.piece.side != self.side:
+                    self.moveSet.append((originX + 1, originY - 1))
+            else:
+                self.moveSet.append((originX + 1, originY - 1))
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX + 1, originY + 1):
+            if board.board[originX + 1][originY + 1].point.piece != None:
+                if board.board[originX + 1][originY + 1].point.piece.side != self.side:
+                    self.moveSet.append((originX + 1, originY + 1))
+            else:
+                self.moveSet.append((originX + 1, originY + 1))
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX + 1, originY):
+            if board.board[originX + 1][originY].point.piece != None:
+                if board.board[originX + 1][originY].point.piece.side != self.side:
+                    self.moveSet.append((originX + 1, originY))
+            else:
+                self.moveSet.append((originX + 1, originY))
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY):
+            if board.board[originX - 1][originY].point.piece != None:
+                if board.board[originX - 1][originY].point.piece.side != self.side:
+                    self.moveSet.append((originX - 1, originY))
+            else:
+                self.moveSet.append((originX - 1, originY))
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX, originY + 1):
+            if board.board[originX][originY + 1].point.piece != None:
+                if board.board[originX][originY + 1].point.piece.side != self.side:
+                    self.moveSet.append((originX, originY + 1))
+            else:
+                self.moveSet.append((originX, originY + 1))
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX, originY - 1):
+            if board.board[originX][originY - 1].point.piece != None:
+                if board.board[originX][originY - 1].point.piece.side != self.side:
+                    self.moveSet.append((originX, originY - 1))
+            else:
+                self.moveSet.append((originX, originY - 1))
+
+        return self.moveSet
+
+
