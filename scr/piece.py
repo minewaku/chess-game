@@ -54,7 +54,7 @@ class Pawn(Piece):
             if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY + 1) and board.board[originX - 1][originY + 1].point.piece != None and board.board[originX - 1][originY + 1].point.piece.side != self.side:
                 self.moveSet.append((originX - 1, originY + 1))
             
-            if originX == 6:
+            if originX == 6 and board.board[originX - 2][originY].point.piece != None:
                 self.moveSet.append((originX - 2, originY))
 
 
@@ -68,7 +68,7 @@ class Pawn(Piece):
             if self.isValidCoordinate(board.BOARD_SIZE, originX + 1, originY + 1) and board.board[originX + 1][originY + 1].point.piece != None and board.board[originX + 1][originY + 1].point.piece.side != self.side:
                 self.moveSet.append((originX + 1, originY + 1))
             
-            if originX == 1 :
+            if originX == 1 and board.board[originX + 2][originY].point.piece != None:
                 self.moveSet.append((originX + 2, originY))
 
         return self.moveSet
