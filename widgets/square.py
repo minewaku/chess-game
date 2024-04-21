@@ -11,6 +11,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 
 class Square(FloatLayout):
+    # each Square on board is a FloatLayout that contains a clickable Button, a HintDot and a Image
+
     def __init__(self, point, board, background_color, **kwargs):
         super(Square, self).__init__(**kwargs)
         self.point = point
@@ -27,6 +29,7 @@ class Square(FloatLayout):
         self.add_widget(self.hintDot)
 
 
+    # assign the piece's image which stand on it to it's Image
     def updateVisual(self):
         if self.point.piece != None:
             if self.point.piece.side == Side.BLACK:

@@ -1,7 +1,7 @@
 import os
 
+from copy import deepcopy
 from .side import Side
-
 from abc import ABC, abstractmethod
 class Piece:
 
@@ -11,12 +11,16 @@ class Piece:
         self.side = side
         self.moveSet = moveSet
 
+
+    # Checking if this move is valid or not (check if it still in range of board)
     def isValidCoordinate(self, BOARD_SIZE, x, y):
         if x <= BOARD_SIZE - 1 and x >= 0 and y <= BOARD_SIZE - 1 and y >= 0:
             return True
     
         return False
     
+
+    #check if as there is an move that can attack enemies king. True if it can attack that king
     def isCheckMate(self, board):
         for move in self.moveSet:
             x, y = move
@@ -24,6 +28,24 @@ class Piece:
                 return True
             
         return False
+    
+    def removeSuicideMove(self, originX, originY, moveSet, board):
+        suicideMove = []
+        for move in moveSet:
+            finalX, finalY = move
+            board.selectedSquare = board.board[originX][originY]
+            board.doMove(square=board.board[finalX][finalY])
+            if board.checkCheckMateForAllPieces(side=self.side):
+                suicideMove.append(move)
+
+            board.undoMove()
+
+        for move in suicideMove:
+            self.moveSet.remove(move)
+
+            # print(f"{board.board[originX][originY].point.piece} move from {(originX, originY)} to {(finalX, finalY)}")
+
+        return self.moveSet
 
 
 from .side import Side
@@ -41,9 +63,11 @@ class Pawn(Piece):
             self.img = Pawn.whiteImg
        
             
-    #create bunch of moves without thinking about how valid they are. Checking for later
+    # create bunch of moves without thinking about how valid they are. Using isValidCoordinate method for each move
     def generateMoveSet(self, board, originX, originY):
         self.moveSet = []
+
+        # just moving pattern of this type of piece
         if self.side == Side.BLACK:
             if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY) and board.board[originX - 1][originY].point.piece == None:
                 self.moveSet.append((originX - 1, originY))
@@ -54,7 +78,7 @@ class Pawn(Piece):
             if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY + 1) and board.board[originX - 1][originY + 1].point.piece != None and board.board[originX - 1][originY + 1].point.piece.side != self.side:
                 self.moveSet.append((originX - 1, originY + 1))
             
-            if originX == 6 and board.board[originX - 2][originY].point.piece != None:
+            if originX == 6 and board.board[originX - 2][originY].point.piece == None:
                 self.moveSet.append((originX - 2, originY))
 
 
@@ -68,9 +92,10 @@ class Pawn(Piece):
             if self.isValidCoordinate(board.BOARD_SIZE, originX + 1, originY + 1) and board.board[originX + 1][originY + 1].point.piece != None and board.board[originX + 1][originY + 1].point.piece.side != self.side:
                 self.moveSet.append((originX + 1, originY + 1))
             
-            if originX == 1 and board.board[originX + 2][originY].point.piece != None:
+            if originX == 1 and board.board[originX + 2][originY].point.piece == None:
                 self.moveSet.append((originX + 2, originY))
-
+            
+        # return self.removeSuicideMove(originX=originX, originY=originY, moveSet=self.moveSet, board=board)
         return self.moveSet
     
 
@@ -203,6 +228,7 @@ class Queen(Piece):
                 else:
                     self.moveSet.append((originX, originY - i))
 
+        # return self.removeSuicideMove(originX=originX, originY=originY, moveSet=self.moveSet, board=board)
         return self.moveSet
 
 
@@ -222,7 +248,6 @@ class King(Piece):
             self.img = King.whiteImg
        
             
-    #create bunch of moves without thinking about how valid they are. Checking for later
     def generateMoveSet(self, board, originX, originY):
         self.moveSet = []
         if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY + 1):
@@ -285,6 +310,7 @@ class King(Piece):
             else:
                 self.moveSet.append((originX, originY - 1))
 
+        # return self.removeSuicideMove(originX=originX, originY=originY, moveSet=self.moveSet, board=board)
         return self.moveSet
 
 

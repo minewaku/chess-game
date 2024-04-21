@@ -14,7 +14,6 @@ class Main(App):
 
         # window_height = 600
         # window_width = 920
-
         # Window.size = (window_width, window_height)
 
         root = FloatLayout()

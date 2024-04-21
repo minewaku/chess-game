@@ -8,11 +8,17 @@ from scr.piece import Queen
 from scr.piece import King
 from scr.point import Point
 from scr.side import Side
+from scr.move import Move
 
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+
 from .square import Square
 
 class Board(GridLayout):
+
+    # Handling all rules and mechanisms that necessary for Chess
 
     BOARD_SIZE = 8
     
@@ -23,7 +29,7 @@ class Board(GridLayout):
         self.board = [[None] * Board.BOARD_SIZE for _ in range(Board.BOARD_SIZE)]
         self.player2 = player1
         self.player1 = player2
-        self.logger = []
+        self.log = []
 
         self.turn = player1
         self.selectedSquare = None
@@ -31,6 +37,11 @@ class Board(GridLayout):
         self.initializeComponents()
         self.renderVisual()
         self.updateMoveSetForAllPieces()
+
+    
+    # def __getitem__(self, coordinate):
+    #     x, y = coordinate
+    #     return self.board[x][y]
 
 
     def initializeComponents(self):
@@ -74,18 +85,17 @@ class Board(GridLayout):
         self.board[7][3].point.piece = Queen(Side.BLACK)
         self.board[7][4].point.piece = King(Side.BLACK)
 
+
+    # render all pieces in the current board position
     def renderVisual(self):
         for i, row in enumerate(self.board):
             for j, col in enumerate(row):
                 self.board[i][j].updateVisual()
-
-
-    def __getitem__(self, coordinate):
-        x, y = coordinate
-        return self.board[x][y]
-            
     
+
+    # determining what to do when picking a piece
     def selectSquare(self, square):
+
         # Point calls Piece to check valid Move
         if square.point.piece != None:
             if self.selectedSquare != None:
@@ -104,7 +114,21 @@ class Board(GridLayout):
                         self.selectedSquare = None
                         self.resetHint(moveSet=moveSet)
                         self.updateMoveSetForAllPieces()
-                        self.checkCheckMateForAllPieces()
+                        if self.turn.side == Side.BLACK:
+                            if self.checkCheckMateForAllPieces(side=Side.WHITE):
+                                Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
+                                self.undoMove()
+                            elif self.checkCheckMateForAllPieces(side=Side.BLACK):
+                                print("Checkmate!")
+
+                        elif self.turn.side == Side.WHITE:
+                            if self.checkCheckMateForAllPieces(side=Side.BLACK):
+                                Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
+                                self.undoMove()
+                            elif self.checkCheckMateForAllPieces(side=Side.WHITE):
+                                print("Checkmate!")
+
+                        self.switchTurn()
                         # print("attack")
 
                     if not self.isInMoveSet(moveSet=moveSet, selectedX=square.point.x, selectedY=square.point.y):
@@ -130,8 +154,21 @@ class Board(GridLayout):
                     self.selectedSquare = None
                     self.resetHint(moveSet=moveSet)
                     self.updateMoveSetForAllPieces()
-                    self.checkCheckMateForAllPieces()
-                    # print("move")
+                    if self.turn.side == Side.BLACK:
+                        if self.checkCheckMateForAllPieces(side=Side.WHITE):
+                            Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
+                            self.undoMove()
+                        elif self.checkCheckMateForAllPieces(side=Side.BLACK):
+                            print("Checkmate!")
+
+                    elif self.turn.side == Side.WHITE:
+                        if self.checkCheckMateForAllPieces(side=Side.BLACK):
+                            Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
+                            self.undoMove()
+                        elif self.checkCheckMateForAllPieces(side=Side.WHITE):
+                            print("Checkmate!")
+
+                    self.switchTurn()
                 else:
                     self.selectedSquare = None
                     self.resetHint(moveSet=moveSet)
@@ -141,18 +178,21 @@ class Board(GridLayout):
                 pass
 
 
+    # display all dotHints from moveSet
     def renderHint(self, moveSet):
         for move in moveSet:
             x, y = move
             self.board[x][y].hintDot.showHint()
 
 
+    # reset all dotHints from moveSet
     def resetHint(self, moveSet):
         for move in moveSet:
             x, y = move
             self.board[x][y].hintDot.hideHint()
 
 
+    # check if selected coordinates is in moveSet or not. This method helps us to know the selected coordinates is valid to make a move
     def isInMoveSet(self, moveSet, selectedX, selectedY):
         for move in moveSet:
             x, y = move
@@ -162,6 +202,7 @@ class Board(GridLayout):
         return False
     
 
+    # make a move
     def doMove(self, square):
         if square.point.piece != None:
             if self.turn.side == self.player1.side and self.selectedSquare.point.piece.side == self.player1.side:
@@ -170,25 +211,57 @@ class Board(GridLayout):
             if self.turn.side == self.player2.side and self.selectedSquare.point.piece.side == self.player2.side:
                 self.player2.addCapturedPiece(square.point.piece)
 
-        self.board[square.point.x][square.point.y].point.piece = self.selectedSquare.point.piece
-        self.board[self.selectedSquare.point.x][self.selectedSquare.point.y].point.piece = None
+            self.log.append(Move(originX=self.selectedSquare.point.x, originY=self.selectedSquare.point.y, finalX=square.point.x, finalY=square.point.y, piece=self.selectedSquare.point.piece, capturedPiece=square.point.piece))
 
+        else:
+            self.log.append(Move(originX=self.selectedSquare.point.x, originY=self.selectedSquare.point.y, finalX=square.point.x, finalY=square.point.y, piece=self.selectedSquare.point.piece))
+
+        self.board[square.point.x][square.point.y].point.piece = self.selectedSquare.point.piece
+        self.board[self.selectedSquare.point.x][self.selectedSquare.point.y].point.piece = None  
+        self.renderVisual()
+
+
+    # switch a turn
+    def switchTurn(self):
+        if self.turn.side == self.player1.side:
+            self.turn = self.player2
+        elif self.turn.side == self.player2.side:
+            self.turn = self.player1
+
+
+    # undo a move, getting that move from log array of current match
+    def undoMove(self):
+        move = self.log[-1]
+        self.updateMoveSetForAllPieces()
+        self.selectedSquare = self.board[move.finalX][move.finalY]
+        moveSet = self.selectedSquare.point.piece.moveSet
+        self.doMove(square=self.board[move.originX][move.originY])
+        self.selectedSquare = None
+        self.resetHint(moveSet=moveSet)
+        if move.capturedPiece != None:
+            self.board[move.finalX][move.finalY].point.piece = move.capturedPiece
+        self.updateMoveSetForAllPieces()
+        self.log.pop()
+        self.switchTurn()
         self.renderVisual()
 
     
+    # after a move, this method would be called to update all possible move that every pieces on the board and stored them to each piece's moveSet. This helps us to know that the current board position has checkmate or not
     def updateMoveSetForAllPieces(self):
         for i, row in enumerate(self.board):
             for j, col in enumerate(row):
                 if self.board[i][j].point.piece != None:
                     self.board[i][j].point.piece.generateMoveSet(board=self, originX=self.board[i][j].point.x, originY=self.board[i][j].point.y)
 
-    #check side to avoid sucuide move
-    def checkCheckMateForAllPieces(self):
+
+    #check checkmate status based on which side you send into. If side=BLACK, check if black pieces are checkmate the white King. True if there is at least one checkmate move 
+    def checkCheckMateForAllPieces(self, side):
         for i, row in enumerate(self.board):
             for j, col in enumerate(row):
-                if self.board[i][j].point.piece != None and self.board[i][j].point.piece.isCheckMate(self):
-                    print("is checkmate")
-        
+                if self.board[i][j].point.piece != None and self.board[i][j].point.piece.side==side == side and self.board[i][j].point.piece.isCheckMate(self):
+                    return True
+                
+        return False
 
 
     #for test only
