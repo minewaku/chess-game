@@ -104,7 +104,7 @@ class Board(GridLayout):
                     self.selectedSquare = square
                     moveSet = self.selectedSquare.point.piece.moveSet
                     self.renderHint(moveSet=moveSet)
-                    # print("try to attack your bros huh, select him instead")
+                    # print("switch selected piece from your side")
 
                 else:
                     moveSet = self.selectedSquare.point.piece.moveSet
@@ -134,16 +134,16 @@ class Board(GridLayout):
                     if not self.isInMoveSet(moveSet=moveSet, selectedX=square.point.x, selectedY=square.point.y):
                         self.selectedSquare = None
                         self.resetHint(moveSet=moveSet)
-                        # print("Bruh this move is not even in moveSet, try to attack air?")
+                        # print("try to move to a move that is not in moveSet, unable to do that")
 
             else:
                 if self.turn.side == square.point.piece.side:
                     self.selectedSquare = square
                     moveSet = self.selectedSquare.point.piece.moveSet
                     self.renderHint(moveSet=moveSet)
-                    # print("nothing get selected yet so im gonna pick this")
+                    # print("nothing get selected, selected this piece")
                 else:
-                    # print("try to select enemy's piece huh, pls dont do that ")
+                    # print("select enemy's piece, unable to do that")
                     pass
                     
         else:
@@ -169,10 +169,11 @@ class Board(GridLayout):
                             print("Checkmate!")
 
                     self.switchTurn()
+                    # print("move")
                 else:
                     self.selectedSquare = None
                     self.resetHint(moveSet=moveSet)
-                    # print("Bruh this move is not even in moveSet, try to step in the air?")
+                    # print("try to make a attack that is not in moveSet, unable to do that")
             else:
                 # print("really nothing to do here")
                 pass
