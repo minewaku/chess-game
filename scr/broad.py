@@ -5,6 +5,8 @@ from point import Point
 
 
 class Board:
+    # UNUSED CLASS, DELETE LATER
+
     # location for Points and defined size of board
     board = [[None] * 8 for Point in range(8)]
     player1 = None

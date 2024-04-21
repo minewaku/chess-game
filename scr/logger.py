@@ -1,4 +1,6 @@
 class Logger:
+    # UNUSED CLASS, DELETE LATER
+
     firstPlayerHistory = {"player": None, "moveHistory": []}
     secondPlayerHistory = {"player": None, "moveHistory": []}
 
