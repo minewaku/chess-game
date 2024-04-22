@@ -22,18 +22,19 @@ class Board(GridLayout):
 
     BOARD_SIZE = 8
     
-    def __init__(self, player_panel_1, player_panel_2, player1, player2, square_size, **kwargs):
+    def __init__(self, player_panel_1, player_panel_2, player_1, player_2, square_size, **kwargs):
         super(Board, self).__init__(**kwargs)
         self.square_size = square_size
     
         self.board = [[None] * Board.BOARD_SIZE for _ in range(Board.BOARD_SIZE)]
         self.player_panel_1=player_panel_1
         self.player_panel_2=player_panel_2
-        self.player2 = player1
-        self.player1 = player2
+        self.player_2 = player_1
+        self.player_1 = player_2
         self.log = []
 
-        self.turn = player1
+        self.turn = player_1
+        self.player_panel_2.timeCounter.stop_counter()
         self.selectedSquare = None
 
         self.initializeComponents()
@@ -208,11 +209,11 @@ class Board(GridLayout):
     # make a move
     def doMove(self, square):
         if square.point.piece != None:
-            if self.turn.side == self.player1.side and self.selectedSquare.point.piece.side == self.player1.side:
-                self.player1.addCapturedPiece(square.point.piece)
+            if self.turn.side == self.player_1.side and self.selectedSquare.point.piece.side == self.player_1.side:
+                self.player_1.addCapturedPiece(square.point.piece)
 
-            if self.turn.side == self.player2.side and self.selectedSquare.point.piece.side == self.player2.side:
-                self.player2.addCapturedPiece(square.point.piece)
+            if self.turn.side == self.player_2.side and self.selectedSquare.point.piece.side == self.player_2.side:
+                self.player_2.addCapturedPiece(square.point.piece)
 
             self.log.append(Move(originX=self.selectedSquare.point.x, originY=self.selectedSquare.point.y, finalX=square.point.x, finalY=square.point.y, piece=self.selectedSquare.point.piece, capturedPiece=square.point.piece))
 
@@ -226,25 +227,27 @@ class Board(GridLayout):
 
     # switch a turn
     def switchTurn(self):
-        if self.turn.side == self.player1.side:
-            self.turn = self.player2
-            self.player_panel_1.timeCounter.stop_counter()
-            self.player_panel_1.timeCounter.reset_counter()
-            self.player_panel_1.update_captured_panel()
-            self.player_panel_1.surrenderButton.disabled = True
-            
-            self.player_panel_2.timeCounter.start_counter()
-            self.player_panel_2.surrenderButton.disabled = False
-
-        elif self.turn.side == self.player2.side:
-            self.turn = self.player1
+        if self.turn.side == self.player_1.side:
+            self.turn = self.player_2
             self.player_panel_2.timeCounter.stop_counter()
             self.player_panel_2.timeCounter.reset_counter()
             self.player_panel_2.update_captured_panel()
             self.player_panel_2.surrenderButton.disabled = True
 
             self.player_panel_1.timeCounter.start_counter()
-            self.player_panel_1.surrenderButton.enabled = False
+            if self.checkCheckMateForAllPieces(side=self.player_1.side):
+                self.player_panel_1.surrenderButton.disabled = False
+
+        elif self.turn.side == self.player_2.side:
+            self.turn = self.player_1
+            self.player_panel_1.timeCounter.stop_counter()
+            self.player_panel_1.timeCounter.reset_counter()
+            self.player_panel_1.update_captured_panel()
+            self.player_panel_1.surrenderButton.disabled = True
+            
+            self.player_panel_2.timeCounter.start_counter()
+            if self.checkCheckMateForAllPieces(side=self.player_2.side):
+                self.player_panel_2.surrenderButton.disabled = False
 
 
     # undo a move, getting that move from log array of current match
@@ -281,7 +284,6 @@ class Board(GridLayout):
                 
         return False
 
-    #
 
     #for test only
     def printBoard(self):

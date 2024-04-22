@@ -5,7 +5,7 @@ class timeCounter(Label):
     def __init__(self, **kwargs):
         super(timeCounter, self).__init__(**kwargs)
         self.counter = 900
-        self.text = "Time: {}".format(self.counter)
+        self.update_text()
         self.timer_event = None  # Initialize timer event
         self.start_counter()
 
@@ -16,7 +16,10 @@ class timeCounter(Label):
 
         if self.counter <= 0:
             self.text = "Time's up!"
-            self.stop_counter()  # Stop the counter when time's up
+            if self.parent.parent.parent.player_1 == self.parent.parent.player:
+                self.parent.parent.parent.end_game(winner=self.parent.parent.parent.player_2)
+            else:
+                self.parent.parent.parent.end_game(winner=self.parent.parent.parent.player_1)
 
 
     def update_text(self):
@@ -39,4 +42,4 @@ class timeCounter(Label):
 
     def reset_counter(self):
         self.counter = 900
-        self.text = "Time: {}".format(self.counter)
+        self.update_text()

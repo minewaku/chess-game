@@ -16,6 +16,10 @@ class Player:
   @property
   def capturedList(self):
     return self.__capturedList
+  
+  @capturedList.setter
+  def capturedList(self, capturedList):
+    self.__capturedList = capturedList
 
   @username.setter
   def username(self, username):
