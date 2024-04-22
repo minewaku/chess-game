@@ -12,7 +12,11 @@ class Player:
   @property
   def username(self):
     return self.__username
-  
+
+  @property
+  def capturedList(self):
+    return self.__capturedList
+
   @username.setter
   def username(self, username):
     self.__username = username

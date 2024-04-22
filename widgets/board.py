@@ -22,11 +22,13 @@ class Board(GridLayout):
 
     BOARD_SIZE = 8
     
-    def __init__(self, player1, player2, square_size, **kwargs):
+    def __init__(self, player_panel_1, player_panel_2, player1, player2, square_size, **kwargs):
         super(Board, self).__init__(**kwargs)
         self.square_size = square_size
     
         self.board = [[None] * Board.BOARD_SIZE for _ in range(Board.BOARD_SIZE)]
+        self.player_panel_1=player_panel_1
+        self.player_panel_2=player_panel_2
         self.player2 = player1
         self.player1 = player2
         self.log = []
@@ -226,8 +228,23 @@ class Board(GridLayout):
     def switchTurn(self):
         if self.turn.side == self.player1.side:
             self.turn = self.player2
+            self.player_panel_1.timeCounter.stop_counter()
+            self.player_panel_1.timeCounter.reset_counter()
+            self.player_panel_1.update_captured_panel()
+            self.player_panel_1.surrenderButton.disabled = True
+            
+            self.player_panel_2.timeCounter.start_counter()
+            self.player_panel_2.surrenderButton.disabled = False
+
         elif self.turn.side == self.player2.side:
             self.turn = self.player1
+            self.player_panel_2.timeCounter.stop_counter()
+            self.player_panel_2.timeCounter.reset_counter()
+            self.player_panel_2.update_captured_panel()
+            self.player_panel_2.surrenderButton.disabled = True
+
+            self.player_panel_1.timeCounter.start_counter()
+            self.player_panel_1.surrenderButton.enabled = False
 
 
     # undo a move, getting that move from log array of current match
