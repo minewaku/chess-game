@@ -34,11 +34,11 @@ class Board(GridLayout):
         self.board = [[None] * Board.BOARD_SIZE for _ in range(Board.BOARD_SIZE)]
         self.player_panel_1=player_panel_1
         self.player_panel_2=player_panel_2
-        self.player_2 = player_1
-        self.player_1 = player_2
+        self.white_player = player_1
+        self.black_player = player_2
         self.log = []
 
-        self.turn = player_1
+        self.turn = self.white_player
         self.player_panel_2.timeCounter.stop_counter()
         self.selectedSquare = None
 
@@ -57,53 +57,53 @@ class Board(GridLayout):
             for j, col in enumerate(row):
                 if i % 2 == 0:
                     if j % 2 == 0:
-                        self.board[i][j] = Square(point=Point(i, j), board=self, background_color="#e2aa23", size_hint=(None, None), size=(self.square_size, self.square_size))
-                    else:
                         self.board[i][j] = Square(point=Point(i, j), board=self, background_color="#fffbe8", size_hint=(None, None), size=(self.square_size, self.square_size))
+                    else:
+                        self.board[i][j] = Square(point=Point(i, j), board=self, background_color="#e2aa23", size_hint=(None, None), size=(self.square_size, self.square_size))
                 else:
                     if j % 2 == 0:  
-                        self.board[i][j] = Square(point=Point(i, j), board=self, background_color="#fffbe8", size_hint=(None, None), size=(self.square_size, self.square_size))
-                    else:
                         self.board[i][j] = Square(point=Point(i, j), board=self, background_color="#e2aa23", size_hint=(None, None), size=(self.square_size, self.square_size))
+                    else:
+                        self.board[i][j] = Square(point=Point(i, j), board=self, background_color="#fffbe8", size_hint=(None, None), size=(self.square_size, self.square_size))
 
                 self.add_widget(self.board[i][j])
 
 
-        self.board[1][0].point.piece = Pawn(Side.WHITE) 
-        self.board[1][1].point.piece = Pawn(Side.WHITE) 
-        self.board[1][2].point.piece = Pawn(Side.WHITE) 
-        self.board[1][3].point.piece = Pawn(Side.WHITE) 
-        self.board[1][4].point.piece = Pawn(Side.WHITE) 
-        self.board[1][5].point.piece = Pawn(Side.WHITE) 
-        self.board[1][6].point.piece = Pawn(Side.WHITE) 
-        self.board[1][7].point.piece = Pawn(Side.WHITE) 
+        self.board[6][0].point.piece = Pawn(Side.WHITE) 
+        self.board[6][1].point.piece = Pawn(Side.WHITE) 
+        self.board[6][2].point.piece = Pawn(Side.WHITE) 
+        self.board[6][3].point.piece = Pawn(Side.WHITE) 
+        self.board[6][4].point.piece = Pawn(Side.WHITE) 
+        self.board[6][5].point.piece = Pawn(Side.WHITE) 
+        self.board[6][6].point.piece = Pawn(Side.WHITE) 
+        self.board[6][7].point.piece = Pawn(Side.WHITE) 
 
-        self.board[0][0].point.piece = Rook(Side.WHITE)
-        self.board[0][1].point.piece = Horse(Side.WHITE)
-        self.board[0][2].point.piece = Bishop(Side.WHITE)
-        self.board[0][3].point.piece = Queen(Side.WHITE)
-        self.board[0][4].point.piece = King(Side.WHITE)
-        self.board[0][5].point.piece = Bishop(Side.WHITE)
-        self.board[0][6].point.piece = Horse(Side.WHITE)
-        self.board[0][7].point.piece = Rook(Side.WHITE)
+        self.board[7][0].point.piece = Rook(Side.WHITE)
+        self.board[7][1].point.piece = Horse(Side.WHITE)
+        self.board[7][2].point.piece = Bishop(Side.WHITE)
+        self.board[7][3].point.piece = Queen(Side.WHITE)
+        self.board[7][4].point.piece = King(Side.WHITE)
+        self.board[7][5].point.piece = Bishop(Side.WHITE)
+        self.board[7][6].point.piece = Horse(Side.WHITE)
+        self.board[7][7].point.piece = Rook(Side.WHITE)
 
-        self.board[6][0].point.piece = Pawn(Side.BLACK) 
-        self.board[6][1].point.piece = Pawn(Side.BLACK) 
-        self.board[6][2].point.piece = Pawn(Side.BLACK) 
-        self.board[6][3].point.piece = Pawn(Side.BLACK) 
-        self.board[6][4].point.piece = Pawn(Side.BLACK) 
-        self.board[6][5].point.piece = Pawn(Side.BLACK) 
-        self.board[6][6].point.piece = Pawn(Side.BLACK) 
-        self.board[6][7].point.piece = Pawn(Side.BLACK) 
+        self.board[1][0].point.piece = Pawn(Side.BLACK) 
+        self.board[1][1].point.piece = Pawn(Side.BLACK) 
+        self.board[1][2].point.piece = Pawn(Side.BLACK) 
+        self.board[1][3].point.piece = Pawn(Side.BLACK) 
+        self.board[1][4].point.piece = Pawn(Side.BLACK) 
+        self.board[1][5].point.piece = Pawn(Side.BLACK) 
+        self.board[1][6].point.piece = Pawn(Side.BLACK) 
+        self.board[1][7].point.piece = Pawn(Side.BLACK) 
 
-        self.board[7][0].point.piece = Rook(Side.BLACK)
-        self.board[7][1].point.piece = Horse(Side.BLACK)
-        self.board[7][2].point.piece = Bishop(Side.BLACK)
-        self.board[7][3].point.piece = Queen(Side.BLACK)
-        self.board[7][4].point.piece = King(Side.BLACK)
-        self.board[7][5].point.piece = Bishop(Side.BLACK)
-        self.board[7][6].point.piece = Horse(Side.BLACK)
-        self.board[7][7].point.piece = Rook(Side.BLACK)
+        self.board[0][0].point.piece = Rook(Side.BLACK)
+        self.board[0][1].point.piece = Horse(Side.BLACK)
+        self.board[0][2].point.piece = Bishop(Side.BLACK)
+        self.board[0][3].point.piece = Queen(Side.BLACK)
+        self.board[0][4].point.piece = King(Side.BLACK)
+        self.board[0][5].point.piece = Bishop(Side.BLACK)
+        self.board[0][6].point.piece = Horse(Side.BLACK)
+        self.board[0][7].point.piece = Rook(Side.BLACK)
 
 
     # render all pieces in the current board position
@@ -113,9 +113,8 @@ class Board(GridLayout):
                 self.board[i][j].updateVisual()
     
 
-    # determining what to do when picking a piece
+    # decide what to do when picking a piece
     def selectSquare(self, square):
-
         # Point calls Piece to check valid Move
         if square.point.piece != None:
             if self.selectedSquare != None:
@@ -230,11 +229,11 @@ class Board(GridLayout):
     # make a move
     def doMove(self, square):
         if square.point.piece != None:
-            if self.turn.side == self.player_1.side and self.selectedSquare.point.piece.side == self.player_1.side:
-                self.player_1.addCapturedPiece(square.point.piece)
+            if self.turn.side == self.black_player.side and self.selectedSquare.point.piece.side == self.black_player.side:
+                self.black_player.addCapturedPiece(square.point.piece)
 
-            if self.turn.side == self.player_2.side and self.selectedSquare.point.piece.side == self.player_2.side:
-                self.player_2.addCapturedPiece(square.point.piece)
+            if self.turn.side == self.white_player.side and self.selectedSquare.point.piece.side == self.white_player.side:
+                self.white_player.addCapturedPiece(square.point.piece)
 
             self.log.append(Move(originX=self.selectedSquare.point.x, originY=self.selectedSquare.point.y, finalX=square.point.x, finalY=square.point.y, piece=self.selectedSquare.point.piece, capturedPiece=square.point.piece))
 
@@ -258,26 +257,26 @@ class Board(GridLayout):
 
     # switch a turn
     def switchTurn(self):
-        if self.turn.side == self.player_1.side:
-            self.turn = self.player_2
+        if self.turn.side == self.black_player.side:
+            self.turn = self.white_player
             self.player_panel_2.timeCounter.stop_counter()
             self.player_panel_2.timeCounter.reset_counter()
             self.player_panel_2.update_captured_panel()
             self.player_panel_2.surrenderButton.disabled = True
 
             self.player_panel_1.timeCounter.start_counter()
-            if self.checkCheckMateForAllPieces(side=self.player_1.side):
+            if self.checkCheckMateForAllPieces(side=self.black_player.side):
                 self.player_panel_1.surrenderButton.disabled = False
 
-        elif self.turn.side == self.player_2.side:
-            self.turn = self.player_1
+        elif self.turn.side == self.white_player.side:
+            self.turn = self.black_player
             self.player_panel_1.timeCounter.stop_counter()
             self.player_panel_1.timeCounter.reset_counter()
             self.player_panel_1.update_captured_panel()
             self.player_panel_1.surrenderButton.disabled = True
             
             self.player_panel_2.timeCounter.start_counter()
-            if self.checkCheckMateForAllPieces(side=self.player_2.side):
+            if self.checkCheckMateForAllPieces(side=self.white_player.side):
                 self.player_panel_2.surrenderButton.disabled = False
 
 

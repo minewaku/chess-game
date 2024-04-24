@@ -29,6 +29,8 @@ class Piece:
             
         return False
     
+
+    #remove this method
     def removeSuicideMove(self, originX, originY, moveSet, board):
         suicideMove = []
         for move in moveSet:
@@ -68,7 +70,7 @@ class Pawn(Piece):
         self.moveSet = []
 
         # just moving pattern of this type of piece
-        if self.side == Side.BLACK:
+        if self.side == Side.WHITE:
             if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY) and board.board[originX - 1][originY].point.piece == None:
                 self.moveSet.append((originX - 1, originY))
 
@@ -82,7 +84,7 @@ class Pawn(Piece):
                 self.moveSet.append((originX - 2, originY))
 
 
-        elif self.side == Side.WHITE:
+        elif self.side == Side.BLACK:
             if self.isValidCoordinate(board.BOARD_SIZE, originX + 1, originY) and board.board[originX + 1][originY].point.piece == None:
                 self.moveSet.append((originX + 1, originY))
 
