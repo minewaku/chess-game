@@ -234,6 +234,243 @@ class Queen(Piece):
 
 
 from .side import Side
+class Horse(Piece):
+
+    blackImg = os.path.join("assets", "img", "pieces", "black_horse.png")
+    whiteImg = os.path.join("assets", "img", "pieces", "white_horse.png")
+
+    def __init__(self, side):
+        super().__init__(side=side, moveSet=[])
+        
+        if side == Side.BLACK:
+            self.img = Horse.blackImg
+        else:
+            self.img = Horse.whiteImg
+
+
+    def generateMoveSet(self, board, originX, originY):
+        self.moveSet = []
+
+        # just moving pattern of this type of piece
+        if self.isValidCoordinate(board.BOARD_SIZE, originX + 2, originY - 1):
+            if board.board[originX + 2][originY - 1].point.piece != None:
+                if board.board[originX + 2][originY - 1].point.piece.side != self.side:
+                    self.moveSet.append((originX + 2, originY - 1))
+            else:
+                self.moveSet.append((originX + 2, originY - 1))
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX + 2, originY + 1):
+            if board.board[originX + 2][originY + 1].point.piece != None:
+                if board.board[originX + 2][originY + 1].point.piece.side != self.side:
+                    self.moveSet.append((originX + 2, originY + 1))
+            else:
+                self.moveSet.append((originX + 2, originY + 1))
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX + 1, originY + 2):
+            if board.board[originX + 1][originY + 2].point.piece != None:
+                if board.board[originX + 1][originY + 2].point.piece.side != self.side:
+                    self.moveSet.append((originX + 1, originY + 2))
+            else:
+                self.moveSet.append((originX + 1, originY + 2))
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY + 2):
+            if board.board[originX - 1][originY + 2].point.piece != None:
+                if board.board[originX - 1][originY + 2].point.piece.side != self.side:
+                    self.moveSet.append((originX - 1, originY + 2))
+            else:
+                self.moveSet.append((originX - 1, originY + 2))
+
+        
+        if self.isValidCoordinate(board.BOARD_SIZE, originX - 2, originY + 1):
+            if board.board[originX - 2][originY + 1].point.piece != None:
+                if board.board[originX - 2][originY + 1].point.piece.side != self.side:
+                    self.moveSet.append((originX - 2, originY + 1))
+            else:
+                self.moveSet.append((originX - 2, originY + 1))  
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX - 2, originY - 1):
+            if board.board[originX - 2][originY - 1].point.piece != None:
+                if board.board[originX - 2][originY - 1].point.piece.side != self.side:
+                    self.moveSet.append((originX - 2, originY - 1))
+            else:
+                self.moveSet.append((originX - 2, originY - 1))      
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX - 1, originY - 2):
+            if board.board[originX - 1][originY - 2].point.piece != None:
+                if board.board[originX - 1][originY - 2].point.piece.side != self.side:
+                    self.moveSet.append((originX - 1, originY - 2))
+            else:
+                self.moveSet.append((originX - 1, originY - 2))     
+
+
+        if self.isValidCoordinate(board.BOARD_SIZE, originX  + 1, originY - 2):
+            if board.board[originX + 1][originY - 2].point.piece != None:
+                if board.board[originX  + 1][originY - 2].point.piece.side != self.side:
+                    self.moveSet.append((originX  + 1, originY - 2))
+            else:
+                self.moveSet.append((originX  + 1, originY - 2))     
+            
+        # return self.removeSuicideMove(originX=originX, originY=originY, moveSet=self.moveSet, board=board)
+        return self.moveSet
+
+
+
+from .side import Side
+class Bishop(Piece):
+
+    blackImg = os.path.join("assets", "img", "pieces", "black_bishop.png")
+    whiteImg = os.path.join("assets", "img", "pieces", "white_bishop.png")
+
+    def __init__(self, side):
+        super().__init__(side=side, moveSet=[])
+        
+        if side == Side.BLACK:
+            self.img = Bishop.blackImg
+        else:
+            self.img = Bishop.whiteImg
+
+
+    def generateMoveSet(self, board, originX, originY):
+        self.moveSet = []
+
+        # just moving pattern of this type of piece
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX - i, originY - i): 
+                if board.board[originX - i][originY - i].point.piece != None:
+                    if board.board[originX - i][originY - i].point.piece.side != self.side:
+                        self.moveSet.append((originX - i, originY - i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX - i, originY - i))
+            else:
+                break
+
+        for i in range(1, 8):        
+            if self.isValidCoordinate(board.BOARD_SIZE, originX - i, originY + i): 
+                if board.board[originX - i][originY + i].point.piece != None:
+                    if board.board[originX - i][originY + i].point.piece.side != self.side:
+                        self.moveSet.append((originX - i, originY + i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX - i, originY + i))
+            else:
+                break
+
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX + i, originY - i): 
+                if board.board[originX + i][originY - i].point.piece != None:
+                    if board.board[originX + i][originY - i].point.piece.side != self.side:
+                        self.moveSet.append((originX + i, originY - i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX + i, originY - i))
+            else:
+                break        
+
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX + i, originY + i): 
+                if board.board[originX + i][originY + i].point.piece != None:
+                    if board.board[originX + i][originY + i].point.piece.side != self.side:
+                        self.moveSet.append((originX + i, originY + i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX + i, originY + i))
+            else:
+                break
+            
+        # return self.removeSuicideMove(originX=originX, originY=originY, moveSet=self.moveSet, board=board)
+        return self.moveSet
+
+
+
+from .side import Side
+class Rook(Piece):
+
+    blackImg = os.path.join("assets", "img", "pieces", "black_rook.png")
+    whiteImg = os.path.join("assets", "img", "pieces", "white_rook.png")
+
+    def __init__(self, side):
+        super().__init__(side=side, moveSet=[])
+        
+        if side == Side.BLACK:
+            self.img = Rook.blackImg
+        else:
+            self.img = Rook.whiteImg
+
+
+    def generateMoveSet(self, board, originX, originY):
+        self.moveSet = []
+        
+        #vertical
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX + i, originY):
+                if board.board[originX + i][originY].point.piece != None:
+                    if board.board[originX + i][originY].point.piece.side != self.side:
+                        self.moveSet.append((originX + i, originY))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX + i, originY))
+            else:
+                break
+
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX - i, originY):
+                if board.board[originX - i][originY].point.piece != None: 
+                    if board.board[originX - i][originY].point.piece.side != self.side:
+                        self.moveSet.append((originX - i, originY))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX - i, originY))
+            else:
+                break
+
+
+        #horizontal
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX, originY + i): 
+                if board.board[originX][originY + i].point.piece != None:
+                    if board.board[originX][originY + i].point.piece.side != self.side:
+                        self.moveSet.append((originX, originY + i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX, originY + i))
+
+        for i in range(1, 8):
+            if self.isValidCoordinate(board.BOARD_SIZE, originX, originY - i): 
+                if board.board[originX][originY - i].point.piece != None:
+                    if board.board[originX][originY - i].point.piece.side != self.side:
+                        self.moveSet.append((originX, originY - i))
+                        break
+                    else:
+                        break
+                else:
+                    self.moveSet.append((originX, originY - i))
+
+        # return self.removeSuicideMove(originX=originX, originY=originY, moveSet=self.moveSet, board=board)
+        return self.moveSet
+
+
+
+from .side import Side
 class King(Piece):
 
     blackImg = os.path.join("assets", "img", "pieces", "black_king.png")
@@ -312,5 +549,4 @@ class King(Piece):
 
         # return self.removeSuicideMove(originX=originX, originY=originY, moveSet=self.moveSet, board=board)
         return self.moveSet
-
 

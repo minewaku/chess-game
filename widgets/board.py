@@ -15,6 +15,7 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 
 from .square import Square
+from .promotionPopup import promotionPopup
 
 class Board(GridLayout):
 
@@ -164,12 +165,16 @@ class Board(GridLayout):
                         elif self.checkCheckMateForAllPieces(side=Side.BLACK):
                             print("Checkmate!")
 
+                        self.checkForPromotion(square=square)
+
                     elif self.turn.side == Side.WHITE:
                         if self.checkCheckMateForAllPieces(side=Side.BLACK):
                             Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
                             self.undoMove()
                         elif self.checkCheckMateForAllPieces(side=Side.WHITE):
                             print("Checkmate!")
+
+                        self.checkForPromotion(square=square)
 
                     self.switchTurn()
                     # print("move")
@@ -221,8 +226,18 @@ class Board(GridLayout):
             self.log.append(Move(originX=self.selectedSquare.point.x, originY=self.selectedSquare.point.y, finalX=square.point.x, finalY=square.point.y, piece=self.selectedSquare.point.piece))
 
         self.board[square.point.x][square.point.y].point.piece = self.selectedSquare.point.piece
-        self.board[self.selectedSquare.point.x][self.selectedSquare.point.y].point.piece = None  
+        self.board[self.selectedSquare.point.x][self.selectedSquare.point.y].point.piece = None
+
         self.renderVisual()
+
+
+    def checkForPromotion(sefl, square):
+        if isinstance(square.point.piece, Pawn) and (square.point.x == 7 or square.point.x == 0) and square.point.piece != None:
+            sefl.promotion(square=square)
+
+
+    def promotion(self, square):
+        self.parent.add_widget(promotionPopup(square=square, pos_hint={'center_x': 0.5, 'center_y': 0.5}))
 
 
     # switch a turn
