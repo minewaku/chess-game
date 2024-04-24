@@ -22,6 +22,7 @@ class surrenderButton(Button):
         else:
             self.parent.parent.end_game(winner=self.parent.parent.player_1)
 
+
     def on_button_release(self, instance):
         self.background_color = self.background_color_on_release
 

@@ -10,6 +10,7 @@ class Piece:
     def __init__(self, side, moveSet):
         self.side = side
         self.moveSet = moveSet
+        self.counter = 0
 
 
     # Checking if this move is valid or not (check if it still in range of board)
@@ -30,7 +31,7 @@ class Piece:
         return False
     
 
-    #remove this method
+    # unused method
     def removeSuicideMove(self, originX, originY, moveSet, board):
         suicideMove = []
         for move in moveSet:
@@ -99,12 +100,6 @@ class Pawn(Piece):
             
         # return self.removeSuicideMove(originX=originX, originY=originY, moveSet=self.moveSet, board=board)
         return self.moveSet
-    
-
-    # #for test only
-    # def printMoveSet(self, moveSet):
-    #     for item in moveSet:
-    #         print(item)
     
 
 

@@ -29,7 +29,7 @@ class Square(FloatLayout):
         self.add_widget(self.hintDot)
 
 
-    # assign the piece's image which stand on it to it's Image
+    # assign the piece's image which is on the square
     def updateVisual(self):
         if self.point.piece != None:
             if self.point.piece.side == Side.BLACK:
@@ -40,15 +40,6 @@ class Square(FloatLayout):
 
         else:
             self.img.source = Piece.transparentImg
-
-
-
-    # def on_click(self, turn, board):
-    #     moveSet = []
-    #     if self.point.piece != None:
-    #         if turn.side == self.point.piece.side:
-    #             moveSet = self.point.piece.generateMoveSet(side=self.point.piece.side, board=board, originX=self.point.x, originY=self.point.y)
-    #             board.generateHint(moveSet)
 
            
         

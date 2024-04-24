@@ -6,9 +6,6 @@ from kivy.uix.image import Image
 from scr.player import Player
 from scr.side import Side
 
-from widgets.board import Board
-from widgets.playerInfo import PlayerInfo
-
 from scenes.gameScene import gameScene
 
 

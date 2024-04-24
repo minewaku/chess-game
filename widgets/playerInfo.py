@@ -30,8 +30,6 @@ class PlayerInfo(BoxLayout):
         self.surrenderButton = surrenderButton(size_hint=(1, 0.2), font_size='18sp', bold=True, background_color='#E63D3D', background_color_on_press='#5B5C5F', background_color_on_release='#E63D3D', background_normal='', color=(1, 1, 1, 0.7), disabled_color=(1, 1, 1, 0.7))
 
         with self.canvas.before:
-            # Set the background color using the Color instruction
-            # Color(0.886, 0.667, 0.137, 1)  # Set the RGBA color (r, g, b, a)
             Color(*get_color_from_hex(background_color))
             # Draw a rectangle as the background using the Rectangle instruction
             self.rect = Rectangle(pos=self.pos, size=self.size)
@@ -42,10 +40,12 @@ class PlayerInfo(BoxLayout):
         self.add_widget(self.capturedPanel)
         self.add_widget(self.surrenderButton)
 
+    
     def update_rectangle(self, *args):
         # Update the position and size of the rectangle to match the layout
         self.rect.pos = self.pos
         self.rect.size = self.size
+
 
     def update_captured_panel(self):
         if self.player.side == Side.WHITE:

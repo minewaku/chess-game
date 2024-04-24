@@ -27,29 +27,23 @@ class Board(GridLayout):
 
     BOARD_SIZE = 8
     
-    def __init__(self, player_panel_1, player_panel_2, player_1, player_2, square_size, **kwargs):
+    def __init__(self, player_panel_1, player_panel_2, square_size, **kwargs):
         super(Board, self).__init__(**kwargs)
         self.square_size = square_size
     
         self.board = [[None] * Board.BOARD_SIZE for _ in range(Board.BOARD_SIZE)]
-        self.player_panel_1=player_panel_1
-        self.player_panel_2=player_panel_2
-        self.white_player = player_1
-        self.black_player = player_2
+        self.player_panel_1 = player_panel_1
+        self.player_panel_2 = player_panel_2
+        self.white_player = None
+        self.black_player = None
         self.log = []
 
-        self.turn = self.white_player
         self.player_panel_2.timeCounter.stop_counter()
         self.selectedSquare = None
 
         self.initializeComponents()
         self.renderVisual()
         self.updateMoveSetForAllPieces()
-
-    
-    # def __getitem__(self, coordinate):
-    #     x, y = coordinate
-    #     return self.board[x][y]
 
 
     def initializeComponents(self):
@@ -216,7 +210,7 @@ class Board(GridLayout):
             self.board[x][y].hintDot.hideHint()
 
 
-    # check if selected coordinates is in moveSet or not. This method helps us to know the selected coordinates is valid to make a move
+    # check if selected coordinate is in moveSet or not. This method helps us to know the selected coordinates is valid to make a move or not
     def isInMoveSet(self, moveSet, selectedX, selectedY):
         for move in moveSet:
             x, y = move
@@ -255,7 +249,7 @@ class Board(GridLayout):
         self.parent.add_widget(promotionPopup(square=square, pos_hint={'center_x': 0.5, 'center_y': 0.5}))
 
 
-    # switch a turn
+    # switch turn
     def switchTurn(self):
         if self.turn.side == self.black_player.side:
             self.turn = self.white_player
@@ -297,7 +291,7 @@ class Board(GridLayout):
         self.renderVisual()
 
     
-    # after a move, this method would be called to update all possible move that every pieces on the board and stored them to each piece's moveSet. This helps us to know that the current board position has checkmate or not
+    # after a move, this method would be called to update all possible move of every pieces on the board and stored them into their moveSet. This helps us to know that the current board position has checkmate or not
     def updateMoveSetForAllPieces(self):
         for i, row in enumerate(self.board):
             for j, col in enumerate(row):
@@ -314,12 +308,6 @@ class Board(GridLayout):
                 
         return False
 
-
-    #for test only
-    def printBoard(self):
-        for i, row in enumerate(self.board):
-            for j, col in enumerate(row):
-                print(self.board[i][j].point.piece)
     
 
         
