@@ -27,18 +27,19 @@ class Board(GridLayout):
 
     BOARD_SIZE = 8
     
-    def __init__(self, player_panel_1, player_panel_2, square_size, **kwargs):
+    def __init__(self, player_panel_black, player_panel_white, square_size, player_1, player_2, **kwargs):
         super(Board, self).__init__(**kwargs)
         self.square_size = square_size
     
         self.board = [[None] * Board.BOARD_SIZE for _ in range(Board.BOARD_SIZE)]
-        self.player_panel_1 = player_panel_1
-        self.player_panel_2 = player_panel_2
-        self.white_player = None
-        self.black_player = None
+        self.player_panel_black = player_panel_black
+        self.player_panel_white = player_panel_white
+        self.player_1 = player_1
+        self.player_2 = player_2
+        self.turn = self.player_panel_white.player
         self.log = []
 
-        self.player_panel_2.timeCounter.stop_counter()
+        self.player_panel_black.timeCounter.stop_counter()
         self.selectedSquare = None
 
         self.initializeComponents()
@@ -223,11 +224,11 @@ class Board(GridLayout):
     # make a move
     def doMove(self, square):
         if square.point.piece != None:
-            if self.turn.side == self.black_player.side and self.selectedSquare.point.piece.side == self.black_player.side:
-                self.black_player.addCapturedPiece(square.point.piece)
+            if self.turn.side == self.player_2.side and self.selectedSquare.point.piece.side == self.player_2.side:
+                self.player_2.addCapturedPiece(square.point.piece)
 
-            if self.turn.side == self.white_player.side and self.selectedSquare.point.piece.side == self.white_player.side:
-                self.white_player.addCapturedPiece(square.point.piece)
+            if self.turn.side == self.player_1.side and self.selectedSquare.point.piece.side == self.player_1.side:
+                self.player_1.addCapturedPiece(square.point.piece)
 
             self.log.append(Move(originX=self.selectedSquare.point.x, originY=self.selectedSquare.point.y, finalX=square.point.x, finalY=square.point.y, piece=self.selectedSquare.point.piece, capturedPiece=square.point.piece))
 
@@ -251,27 +252,27 @@ class Board(GridLayout):
 
     # switch turn
     def switchTurn(self):
-        if self.turn.side == self.black_player.side:
-            self.turn = self.white_player
-            self.player_panel_2.timeCounter.stop_counter()
-            self.player_panel_2.timeCounter.reset_counter()
-            self.player_panel_2.update_captured_panel()
-            self.player_panel_2.surrenderButton.disabled = True
+        if self.turn.side == self.player_panel_white.player.side:
+            self.turn = self.player_panel_black.player
+            self.player_panel_white.timeCounter.stop_counter()
+            self.player_panel_white.timeCounter.reset_counter()
+            self.player_panel_white.update_captured_panel()
+            self.player_panel_white.surrenderButton.disabled = True
 
-            self.player_panel_1.timeCounter.start_counter()
-            if self.checkCheckMateForAllPieces(side=self.black_player.side):
-                self.player_panel_1.surrenderButton.disabled = False
+            self.player_panel_black.timeCounter.start_counter()
+            if self.checkCheckMateForAllPieces(side=self.player_panel_white.player.side):
+                self.player_panel_black.surrenderButton.disabled = False
 
-        elif self.turn.side == self.white_player.side:
-            self.turn = self.black_player
-            self.player_panel_1.timeCounter.stop_counter()
-            self.player_panel_1.timeCounter.reset_counter()
-            self.player_panel_1.update_captured_panel()
-            self.player_panel_1.surrenderButton.disabled = True
+        elif self.turn.side == self.player_panel_black.player.side:
+            self.turn = self.player_panel_white.player
+            self.player_panel_black.timeCounter.stop_counter()
+            self.player_panel_black.timeCounter.reset_counter()
+            self.player_panel_black.update_captured_panel()
+            self.player_panel_black.surrenderButton.disabled = True
             
-            self.player_panel_2.timeCounter.start_counter()
-            if self.checkCheckMateForAllPieces(side=self.white_player.side):
-                self.player_panel_2.surrenderButton.disabled = False
+            self.player_panel_white.timeCounter.start_counter()
+            if self.checkCheckMateForAllPieces(side=self.player_panel_black.player.side):
+                self.player_panel_white.surrenderButton.disabled = False
 
 
     # undo a move, getting that move from log array of current match

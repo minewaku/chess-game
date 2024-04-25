@@ -1,6 +1,5 @@
 import sys
 
-sys.path.append('../')
 from scr.side import Side
 from scr.piece import Piece
 

@@ -9,6 +9,10 @@ class Player:
   def side(self):
     return self.__side
   
+  @side.setter
+  def side(self, side):
+    self.__side = side
+  
   @property
   def username(self):
     return self.__username
