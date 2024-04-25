@@ -1,4 +1,5 @@
 from scr.side import Side
+from scr.logger import Logger
 
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
@@ -36,6 +37,7 @@ class gameScene(FloatLayout):
 
     def end_game(self, winner):
         Popup(title='Alert', content=Label(text=f"{winner.username} win!"), size_hint=(None, None), size=(300, 200)).open()
+        Logger(winner=winner, player_1=self.player_1, player_2=self.player_2, log=self.board_panel.log).writeLog()
         self.player_panel_black.timeCounter.stop_counter()
         self.player_panel_white.timeCounter.stop_counter()
         self.restart_game()

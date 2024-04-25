@@ -223,6 +223,8 @@ class Board(GridLayout):
 
     # make a move
     def doMove(self, square):
+        self.selectedSquare.point.piece.moveCount = self.selectedSquare.point.piece.moveCount + 1
+
         if square.point.piece != None:
             if self.turn.side == self.player_2.side and self.selectedSquare.point.piece.side == self.player_2.side:
                 self.player_2.addCapturedPiece(square.point.piece)
@@ -241,6 +243,24 @@ class Board(GridLayout):
         self.renderVisual()
 
 
+    # undo a move, getting that move from log array of current match
+    def undoMove(self):
+        move = self.log[-1]
+        self.updateMoveSetForAllPieces()
+        self.selectedSquare = self.board[move.finalX][move.finalY]
+        self.selectedSquare.point.piece.moveCount = self.selectedSquare.point.piece.moveCount - 1
+        moveSet = self.selectedSquare.point.piece.moveSet
+        self.doMove(square=self.board[move.originX][move.originY])
+        self.selectedSquare = None
+        self.resetHint(moveSet=moveSet)
+        if move.capturedPiece != None:
+            self.board[move.finalX][move.finalY].point.piece = move.capturedPiece
+        self.updateMoveSetForAllPieces()
+        self.log.pop()
+        self.switchTurn()
+        self.renderVisual()
+
+
     def checkForPromotion(sefl, square):
         if isinstance(square.point.piece, Pawn) and (square.point.x == 7 or square.point.x == 0) and square.point.piece != None:
             sefl.promotion(square=square)
@@ -248,6 +268,10 @@ class Board(GridLayout):
 
     def promotion(self, square):
         self.parent.add_widget(promotionPopup(square=square, pos_hint={'center_x': 0.5, 'center_y': 0.5}))
+
+    
+    def castling(self):
+        pass
 
 
     # switch turn
@@ -273,23 +297,6 @@ class Board(GridLayout):
             self.player_panel_white.timeCounter.start_counter()
             if self.checkCheckMateForAllPieces(side=self.player_panel_black.player.side):
                 self.player_panel_white.surrenderButton.disabled = False
-
-
-    # undo a move, getting that move from log array of current match
-    def undoMove(self):
-        move = self.log[-1]
-        self.updateMoveSetForAllPieces()
-        self.selectedSquare = self.board[move.finalX][move.finalY]
-        moveSet = self.selectedSquare.point.piece.moveSet
-        self.doMove(square=self.board[move.originX][move.originY])
-        self.selectedSquare = None
-        self.resetHint(moveSet=moveSet)
-        if move.capturedPiece != None:
-            self.board[move.finalX][move.finalY].point.piece = move.capturedPiece
-        self.updateMoveSetForAllPieces()
-        self.log.pop()
-        self.switchTurn()
-        self.renderVisual()
 
     
     # after a move, this method would be called to update all possible move of every pieces on the board and stored them into their moveSet. This helps us to know that the current board position has checkmate or not

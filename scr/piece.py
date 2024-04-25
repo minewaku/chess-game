@@ -10,7 +10,7 @@ class Piece:
     def __init__(self, side, moveSet):
         self.side = side
         self.moveSet = moveSet
-        self.counter = 0
+        self.moveCount = 0
 
 
     # Checking if this move is valid or not (check if it still in range of board)
