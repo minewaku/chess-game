@@ -239,7 +239,7 @@ class Board(GridLayout):
 
         self.board[square.point.x][square.point.y].point.piece = self.selectedSquare.point.piece
         self.board[self.selectedSquare.point.x][self.selectedSquare.point.y].point.piece = None
-
+        self.checkForCastling(square=square)
         self.renderVisual()
 
 
@@ -270,8 +270,41 @@ class Board(GridLayout):
         self.parent.add_widget(promotionPopup(square=square, pos_hint={'center_x': 0.5, 'center_y': 0.5}))
 
     
-    def castling(self):
-        pass
+    def checkForCastling(self, square):
+        if isinstance(square.point.piece, King) and (square.point.y == 2 or square.point.y == 6) and square.point.piece.moveCount == 1:
+            self.castling(square=square)
+
+
+    def castling(self, square):
+        if square.point.piece.side == Side.WHITE:
+            if square.point.y == 2:
+                self.selectedSquare = self.board[7][0]
+                self.doMove(self.board[7][3]) 
+
+            elif square.point.y == 6:
+                self.selectedSquare = self.board[7][7]
+                self.doMove(self.board[7][5])
+
+            self.updateMoveSetForAllPieces()
+            if self.checkCheckMateForAllPieces(side=Side.BLACK):
+                # need to undo move twice cause we need to undo move for both king and rook
+                self.undoMove()
+                self.undoMove()
+                
+        elif square.point.piece.side == Side.BLACK:
+            if square.point.y == 2:
+                self.selectedSquare = self.board[0][0]
+                self.doMove(self.board[0][3]) 
+
+            elif square.point.y == 6:
+                self.selectedSquare = self.board[0][7]
+                self.doMove(self.board[0][5])
+
+            self.updateMoveSetForAllPieces()
+            if self.checkCheckMateForAllPieces(side=Side.WHITE):
+                self.undoMove()
+                self.undoMove()
+
 
 
     # switch turn

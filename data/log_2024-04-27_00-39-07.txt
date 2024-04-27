@@ -1,0 +1,18 @@
+Winner: Player 1
+Player 2    Player 1
+WHITE     BLACK
+WHITE Pawn: (6, 4) to (4, 4)  captured: None
+BLACK Pawn: (1, 3) to (3, 3)  captured: None
+WHITE Bishop: (7, 5) to (4, 2)  captured: None
+BLACK Pawn: (1, 5) to (3, 5)  captured: None
+WHITE Horse: (7, 6) to (5, 7)  captured: None
+BLACK Pawn: (1, 4) to (2, 4)  captured: None
+WHITE King: (7, 4) to (7, 6)  captured: None
+WHITE Rook: (7, 7) to (7, 5)  captured: None
+BLACK Pawn: (1, 2) to (3, 2)  captured: None
+WHITE Pawn: (6, 6) to (4, 6)  captured: None
+BLACK Pawn: (1, 1) to (3, 1)  captured: None
+WHITE Pawn: (6, 3) to (5, 3)  captured: None
+BLACK Queen: (0, 3) to (3, 6)  captured: None
+WHITE Horse: (5, 7) to (4, 5)  captured: None
+BLACK Queen: (3, 6) to (4, 6)  captured: <scr.piece.Pawn object at 0x000002A42A087F50>

@@ -544,6 +544,26 @@ class King(Piece):
             else:
                 self.moveSet.append((originX, originY - 1))
 
+        
+        if self.moveCount == 0:
+            if self.side == Side.WHITE:
+                if board.board[7][0].point.piece != None and board.board[7][0].point.piece.moveCount == 0:
+                    if board.board[7][1].point.piece == None and board.board[7][2].point.piece == None and board.board[7][3].point.piece == None:
+                        self.moveSet.append(((originX, originY - 2)))
+
+                if board.board[7][7].point.piece != None and board.board[7][7].point.piece.moveCount == 0:
+                    if board.board[7][5].point.piece == None and board.board[7][6].point.piece == None:
+                        self.moveSet.append(((originX, originY + 2)))
+                
+            elif self.side == Side.BLACK:
+                if board.board[0][0].point.piece != None and board.board[0][0].point.piece.moveCount == 0:
+                    if board.board[0][1].point.piece == None and board.board[0][2].point.piece == None and board.board[0][3].point.piece == None:
+                        self.moveSet.append(((originX, originY - 2)))
+
+                if board.board[0][7].point.piece != None and board.board[0][7].point.piece.moveCount == 0:
+                    if board.board[0][5].point.piece == None and board.board[0][6].point.piece == None:
+                        self.moveSet.append(((originX, originY + 2)))
+
         # return self.removeSuicideMove(originX=originX, originY=originY, moveSet=self.moveSet, board=board)
         return self.moveSet
 
