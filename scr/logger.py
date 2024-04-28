@@ -34,7 +34,7 @@ class Logger:
                 file.write(f"{self.__player_2.side.name}     {self.__player_1.side.name}\n")
 
             for item in self.__log:
-                file.write(f"{item.piece.side.name} {item.piece.__class__.__name__}: ({item.originX}, {item.originY}) to ({item.finalX}, {item.finalY})  captured: {item.capturedPiece}\n")
+                file.write(f"{item.piece.side.name} {item.piece.__class__.__name__}: ({item.originX}, {item.originY}) to ({item.finalX}, {item.finalY})  captured: {item.capturedPiece.__class__.__name__}\n")
 
         
 

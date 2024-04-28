@@ -1,0 +1,13 @@
+Winner: Player 1
+Player 2    Player 1
+WHITE     BLACK
+WHITE Pawn: (6, 4) to (4, 4)  captured: NoneType
+BLACK Pawn: (1, 3) to (3, 3)  captured: NoneType
+WHITE Bishop: (7, 5) to (2, 0)  captured: NoneType
+BLACK Pawn: (1, 1) to (2, 0)  captured: Bishop
+WHITE Horse: (7, 6) to (5, 7)  captured: NoneType
+BLACK Pawn: (3, 3) to (4, 4)  captured: Pawn
+WHITE Pawn: (6, 5) to (5, 5)  captured: NoneType
+BLACK Pawn: (4, 4) to (5, 5)  captured: Pawn
+WHITE Pawn: (6, 6) to (5, 6)  captured: NoneType
+BLACK Pawn: (5, 5) to (6, 5)  captured: NoneType

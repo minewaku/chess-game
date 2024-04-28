@@ -30,6 +30,30 @@ class Piece:
             
         return False
     
+    # check if the piece on the square is in attack range of enemies or not
+    # def isInDanger(self, square, board):
+    #     for i, row in enumerate(board.board):
+    #         for j, col in enumerate(row):
+    #             if board.board[i][j].point.piece != None and board.board[i][j].point.piece.side != square.point.piece.side:
+    #                 moveSet = board.board[i][j].point.piece.generateMoveSet(board, i, j)
+    #                 for move in moveSet:
+    #                     x, y = move
+    #                     if x == square.point.x and y == square.point.y:
+    #                         return True
+            
+    #     return False
+    
+    def isInDanger(self, square, side, board):
+        for i, row in enumerate(board.board):
+            for j, col in enumerate(row):
+                if board.board[i][j].point.piece != None and board.board[i][j].point.piece.side != side and board.board[i][j] != square and i != square.point.x and j != square.point.y: 
+                    moveSet = board.board[i][j].point.piece.generateMoveSet(board=board, originX=i, originY=j)
+                    for move in moveSet:
+                        x, y = move
+                        if x == square.point.x and y == square.point.y:
+                            return True
+
+        return False
 
     # unused method
     def removeSuicideMove(self, originX, originY, moveSet, board):
@@ -544,23 +568,23 @@ class King(Piece):
             else:
                 self.moveSet.append((originX, originY - 1))
 
-        
+        # castling
         if self.moveCount == 0:
             if self.side == Side.WHITE:
                 if board.board[7][0].point.piece != None and board.board[7][0].point.piece.moveCount == 0:
-                    if board.board[7][1].point.piece == None and board.board[7][2].point.piece == None and board.board[7][3].point.piece == None:
+                    if board.board[7][1].point.piece == None and board.board[7][2].point.piece == None and board.board[7][3].point.piece == None and not self.isInDanger(square=board.board[originX][originY], side=Side.WHITE, board=board):
                         self.moveSet.append(((originX, originY - 2)))
 
-                if board.board[7][7].point.piece != None and board.board[7][7].point.piece.moveCount == 0:
+                if board.board[7][7].point.piece != None and board.board[7][7].point.piece.moveCount == 0 and not self.isInDanger(square=board.board[originX][originY], side=Side.WHITE, board=board):
                     if board.board[7][5].point.piece == None and board.board[7][6].point.piece == None:
                         self.moveSet.append(((originX, originY + 2)))
                 
             elif self.side == Side.BLACK:
                 if board.board[0][0].point.piece != None and board.board[0][0].point.piece.moveCount == 0:
-                    if board.board[0][1].point.piece == None and board.board[0][2].point.piece == None and board.board[0][3].point.piece == None:
+                    if board.board[0][1].point.piece == None and board.board[0][2].point.piece == None and board.board[0][3].point.piece == None and not self.isInDanger(square=board.board[originX][originY], side=Side.BLACK, board=board):
                         self.moveSet.append(((originX, originY - 2)))
 
-                if board.board[0][7].point.piece != None and board.board[0][7].point.piece.moveCount == 0:
+                if board.board[0][7].point.piece != None and board.board[0][7].point.piece.moveCount == 0 and not self.isInDanger(square=board.board[originX][originY], side=Side.BLACK, board=board):
                     if board.board[0][5].point.piece == None and board.board[0][6].point.piece == None:
                         self.moveSet.append(((originX, originY + 2)))
 

@@ -129,17 +129,17 @@ class Board(GridLayout):
                         self.resetHint(moveSet=moveSet)
                         self.updateMoveSetForAllPieces()
                         if self.turn.side == Side.BLACK:
-                            if self.checkCheckMateForAllPieces(side=Side.WHITE):
+                            if self.checkCheckingForAllPieces(side=Side.WHITE):
                                 Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
                                 self.undoMove()
-                            elif self.checkCheckMateForAllPieces(side=Side.BLACK):
+                            elif self.checkCheckingForAllPieces(side=Side.BLACK):
                                 print("Checkmate!")
 
                         elif self.turn.side == Side.WHITE:
-                            if self.checkCheckMateForAllPieces(side=Side.BLACK):
+                            if self.checkCheckingForAllPieces(side=Side.BLACK):
                                 Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
                                 self.undoMove()
-                            elif self.checkCheckMateForAllPieces(side=Side.WHITE):
+                            elif self.checkCheckingForAllPieces(side=Side.WHITE):
                                 print("Checkmate!")
 
                         self.switchTurn()
@@ -169,19 +169,19 @@ class Board(GridLayout):
                     self.resetHint(moveSet=moveSet)
                     self.updateMoveSetForAllPieces()
                     if self.turn.side == Side.BLACK:
-                        if self.checkCheckMateForAllPieces(side=Side.WHITE):
+                        if self.checkCheckingForAllPieces(side=Side.WHITE):
                             Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
                             self.undoMove()
-                        elif self.checkCheckMateForAllPieces(side=Side.BLACK):
+                        elif self.checkCheckingForAllPieces(side=Side.BLACK):
                             print("Checkmate!")
 
                         self.checkForPromotion(square=square)
 
                     elif self.turn.side == Side.WHITE:
-                        if self.checkCheckMateForAllPieces(side=Side.BLACK):
+                        if self.checkCheckingForAllPieces(side=Side.BLACK):
                             Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
                             self.undoMove()
-                        elif self.checkCheckMateForAllPieces(side=Side.WHITE):
+                        elif self.checkCheckingForAllPieces(side=Side.WHITE):
                             print("Checkmate!")
 
                         self.checkForPromotion(square=square)
@@ -286,7 +286,7 @@ class Board(GridLayout):
                 self.doMove(self.board[7][5])
 
             self.updateMoveSetForAllPieces()
-            if self.checkCheckMateForAllPieces(side=Side.BLACK):
+            if self.checkCheckingForAllPieces(side=Side.BLACK):
                 # need to undo move twice cause we need to undo move for both king and rook
                 self.undoMove()
                 self.undoMove()
@@ -301,7 +301,7 @@ class Board(GridLayout):
                 self.doMove(self.board[0][5])
 
             self.updateMoveSetForAllPieces()
-            if self.checkCheckMateForAllPieces(side=Side.WHITE):
+            if self.checkCheckingForAllPieces(side=Side.WHITE):
                 self.undoMove()
                 self.undoMove()
 
@@ -317,7 +317,7 @@ class Board(GridLayout):
             self.player_panel_white.surrenderButton.disabled = True
 
             self.player_panel_black.timeCounter.start_counter()
-            if self.checkCheckMateForAllPieces(side=self.player_panel_white.player.side):
+            if self.checkCheckingForAllPieces(side=self.player_panel_white.player.side):
                 self.player_panel_black.surrenderButton.disabled = False
 
         elif self.turn.side == self.player_panel_black.player.side:
@@ -328,7 +328,7 @@ class Board(GridLayout):
             self.player_panel_black.surrenderButton.disabled = True
             
             self.player_panel_white.timeCounter.start_counter()
-            if self.checkCheckMateForAllPieces(side=self.player_panel_black.player.side):
+            if self.checkCheckingForAllPieces(side=self.player_panel_black.player.side):
                 self.player_panel_white.surrenderButton.disabled = False
 
     
@@ -341,7 +341,7 @@ class Board(GridLayout):
 
 
     #check checkmate status based on which side you send into. If side=BLACK, check if black pieces are checkmate the white King. True if there is at least one checkmate move 
-    def checkCheckMateForAllPieces(self, side):
+    def checkCheckingForAllPieces(self, side):
         for i, row in enumerate(self.board):
             for j, col in enumerate(row):
                 if self.board[i][j].point.piece != None and self.board[i][j].point.piece.side==side == side and self.board[i][j].point.piece.isCheckMate(self):
