@@ -1,0 +1,19 @@
+Winner: Player 2
+Player 1    Player 2
+WHITE     BLACK
+WHITE Pawn: (6, 0) to (4, 0)  captured: NoneType
+BLACK Pawn: (1, 3) to (3, 3)  captured: NoneType
+WHITE Pawn: (4, 0) to (3, 0)  captured: NoneType
+BLACK Pawn: (3, 3) to (4, 3)  captured: NoneType
+WHITE Rook: (7, 0) to (4, 0)  captured: NoneType
+BLACK Queen: (0, 3) to (3, 3)  captured: NoneType
+WHITE Rook: (4, 0) to (4, 3)  captured: Pawn
+BLACK Queen: (3, 3) to (4, 3)  captured: Rook
+WHITE Pawn: (6, 1) to (4, 1)  captured: NoneType
+BLACK Pawn: (1, 1) to (3, 1)  captured: NoneType
+WHITE Horse: (7, 1) to (5, 2)  captured: NoneType
+BLACK Pawn: (1, 2) to (3, 2)  captured: NoneType
+WHITE Horse: (5, 2) to (3, 1)  captured: Pawn
+BLACK Pawn: (3, 2) to (4, 1)  captured: Pawn
+WHITE Pawn: (6, 3) to (5, 3)  captured: NoneType
+BLACK Queen: (4, 3) to (6, 5)  captured: Pawn
