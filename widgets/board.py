@@ -142,6 +142,8 @@ class Board(GridLayout):
                             elif self.checkCheckingForAllPieces(side=Side.WHITE):
                                 print("Checkmate!")
 
+
+                        self.checkForPromotion(square=square)
                         self.switchTurn()
                         # print("attack")
 
@@ -175,8 +177,6 @@ class Board(GridLayout):
                         elif self.checkCheckingForAllPieces(side=Side.BLACK):
                             print("Checkmate!")
 
-                        self.checkForPromotion(square=square)
-
                     elif self.turn.side == Side.WHITE:
                         if self.checkCheckingForAllPieces(side=Side.BLACK):
                             Popup(title='Alert', content=Label(text="You're in checkmate!"), size_hint=(None, None), size=(300, 200)).open()
@@ -184,8 +184,7 @@ class Board(GridLayout):
                         elif self.checkCheckingForAllPieces(side=Side.WHITE):
                             print("Checkmate!")
 
-                        self.checkForPromotion(square=square)
-
+                    self.checkForPromotion(square=square)
                     self.switchTurn()
                     # print("move")
                 else:
@@ -261,9 +260,9 @@ class Board(GridLayout):
         self.renderVisual()
 
 
-    def checkForPromotion(sefl, square):
+    def checkForPromotion(self, square):
         if isinstance(square.point.piece, Pawn) and (square.point.x == 7 or square.point.x == 0) and square.point.piece != None:
-            sefl.promotion(square=square)
+            self.promotion(square=square)
 
 
     def promotion(self, square):
