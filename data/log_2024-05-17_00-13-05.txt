@@ -1,0 +1,7 @@
+Winner: Player 2
+Player 1    Player 2
+WHITE     BLACK
+WHITE Pawn: (6, 3) to (4, 3)  captured: NoneType
+BLACK Pawn: (1, 2) to (3, 2)  captured: NoneType
+WHITE Pawn: (6, 4) to (4, 4)  captured: NoneType
+BLACK Queen: (0, 3) to (3, 0)  captured: NoneType
