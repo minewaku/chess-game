@@ -13,25 +13,37 @@ class Client:
 
 
     def start_client(self):
-        # Receive player from server
-        data = self.client_socket.recv(1024)
-        self.player = pickle.loads(data)
-        print(f"Received player: {self.player.username}")
-
         self.main = Main(self)
+        self.handle_respone_data({'type': 'initialize_player'})
+        data = self.client_socket.recv(1024)
+        received_data = pickle.loads(data)
+        self.handle_received_data(received_data)
         self.main.run()
+        
+        self.main.add_input_user()
+
+        while True:
+            data = self.client_socket.recv(1024)
+            received_data = pickle.loads(data)
+            self.handle_received_data(received_data)
+
+    
+    def handle_received_data(self, received_data):
+
+        if received_data['type'] == 'player':
+            player = received_data['player']
+            self.main.player_list.append(player)
+            if self.main.currentPlayer == None:
+                self.main.currentPlayer = player
+
+        elif received_data['type'] == 'player_list':
+            self.main.players = received_data['player_list']
 
 
-    def send_username(client_socket, username):
-        data = pickle.dumps(username)
-        client_socket.send(data)
-        client_socket.close()
+    def handle_respone_data(self, data):
+        response_data = pickle.dumps(data)
+        self.client_socket.send(response_data)
 
-
-    def send_object(client_socket, client_object):
-        data = pickle.dumps(client_object)
-        client_socket.send(data)
-        client_socket.close()
 
 if __name__ == '__main__':
     client = Client()
