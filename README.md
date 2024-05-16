@@ -24,10 +24,10 @@ Checkmate doesnt work, players have to surrender through surrender button to end
 
 ## Screenshots
 # gameplay
-![alt text](https://github.com/minewaku/chess-game/assets/img/screenshot_1.png?raw=true)
-![alt text](https://github.com/minewaku/chess-game/assets/screenshot_2.png?raw=true)
+![alt text](https://github.com/minewaku/chess-game/blob/main/assets/img/screenshot_1.png)
+![alt text](https://github.com/minewaku/chess-game/blob/main/assets/img/screenshot_2.png)
 
 # player win
-![alt text](https://github.com/minewaku/chess-game/assets/screenshot_3.png?raw=true)
+![alt text](https://github.com/minewaku/chess-game/blob/main/assets/img/screenshot_3.png)
 
 
