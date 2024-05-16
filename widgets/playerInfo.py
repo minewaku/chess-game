@@ -7,7 +7,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.label import Label
 from kivy.uix.image import Image
-from kivy.graphics import Color, Rectangle
 from kivy.utils import get_color_from_hex
 
 from widgets.surrenderButton import surrenderButton

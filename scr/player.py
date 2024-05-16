@@ -3,6 +3,7 @@ class Player:
   def __init__(self, side, username):
     self.__side = side
     self.__username = username
+    self.__ready = False
     self.__capturedList = []
 
   @property
@@ -31,4 +32,13 @@ class Player:
 
   def addCapturedPiece(self, piece):
     self.__capturedList.append(piece)
+
+  @property
+  def ready(self):
+    return self.__ready
+  
+  @ready.setter
+  def ready(self, ready):
+    self.__ready = ready
+  
   
